@@ -4,11 +4,17 @@ const dotenv = require('dotenv');
 const port = process.env.PORT || 8000;
 dotenv.config();
 
+const db = require('./config/db')
 
-app.get('/',(req,res)=>{
-    res.send("hello");
-    console.log(port)
-})
+
+//health api
+app.get("/health", (req, res) => {
+    res.json({
+        service: "job listing server",
+        status: "Active",
+        time: new Date(),
+    });
+});
 
 app.listen(port, () => {
     console.log(`App are listing on ${port}`)
