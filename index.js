@@ -2,7 +2,8 @@ const express = require('express')
 const app = express();
 const dotenv = require('dotenv');
 const port = process.env.PORT || 8000;
-const authRoute = require('./routes/auth')
+const authRoute = require('./routes/authRoute');
+const jobRoute = require('./routes/jobRoute');
 dotenv.config();
 
 app.use(express.json());
@@ -18,7 +19,8 @@ app.get("/health", (req, res) => {
 });
 
 //auth route
-app.use('/',authRoute);
+app.use('/api/v1/auth',authRoute);
+app.use('/api/v1/job',jobRoute);
 
 app.listen(port, () => {
     console.log(`App are listing on ${port}`)

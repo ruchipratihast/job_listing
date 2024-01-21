@@ -1,0 +1,24 @@
+meta {
+  name: create_job
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/v1/job/create
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWFhYWYwYmQ2YzdkYjVhMDQ2NGViZGIiLCJpYXQiOjE3MDU3NjM2MjV9.-dT8IFZBIvy9vri9GnpRh9ohJ7ujoOXYPIPE3wlOylE
+}
+
+body:json {
+  {
+    "companyName": "cuvette",
+    "logoUrl":"www.cuvette.com",
+    "title":"our company is great", 
+    "description":"blaaaa blaaaa blaaaa...."
+  }
+}
