@@ -1,4 +1,5 @@
 const Job = require("../models/jobModel");
+const mongoose = require('mongoose');
 
 const createJob = async (req, res) => {
     try {
@@ -56,7 +57,8 @@ const editJob = async (req, res) => {
     }
 }
 
-const jobDescription = async (req,res)=>{
+// Controller to show the detail description of job post
+const jobDescription = async (req, res) => {
     try {
         const jobId = req.params.jobId;
 
@@ -74,8 +76,26 @@ const jobDescription = async (req,res)=>{
     }
 }
 
+const deleteJob = async (req, res) => {
+    try {
+        const id = req.params.jobId;
+
+        try {
+            await Job.findByIdAndDelete(id);
+            res.json({ message: `User with id ${id} successfully deleted` });
+ 
+        } catch (error) {
+            res.status(500).json({ message: `Error deleting user: ${error.message}` });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     createJob,
     editJob,
     jobDescription,
+    deleteJob,
 }
