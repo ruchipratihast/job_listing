@@ -76,6 +76,41 @@ const jobDescription = async (req, res) => {
     }
 }
 
+//Controller to get all the jobs with filters based on skills and job title
+const allJob = async (req, res) => {
+    try {
+        const { skills, title } = req.query;
+
+        let query = {};
+
+        if (skills) {
+            query = {
+                $and: [
+                    query,
+                    { skills: { $in: skills.split(',') } },
+                ],
+            };
+        }
+        
+        if (title) {
+            query = {
+                $and: [
+                    query,
+                    { title: { $regex: title, $options: "i" } },
+                ],
+            };
+        }
+
+        console.log(query);
+        const jobs = await Job.find(query);
+        res.json(jobs);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching jobs' });
+    }
+}
+
 const deleteJob = async (req, res) => {
     try {
         const id = req.params.jobId;
@@ -83,7 +118,7 @@ const deleteJob = async (req, res) => {
         try {
             await Job.findByIdAndDelete(id);
             res.json({ message: `User with id ${id} successfully deleted` });
- 
+
         } catch (error) {
             res.status(500).json({ message: `Error deleting user: ${error.message}` });
         }
@@ -97,5 +132,6 @@ module.exports = {
     createJob,
     editJob,
     jobDescription,
+    allJob,
     deleteJob,
 }
