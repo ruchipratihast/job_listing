@@ -1,5 +1,4 @@
 const Job = require("../models/jobModel");
-const mongoose = require('mongoose');
 
 const createJob = async (req, res) => {
     try {
@@ -100,8 +99,7 @@ const allJob = async (req, res) => {
                 ],
             };
         }
-
-        console.log(query);
+        
         const jobs = await Job.find(query);
         res.json(jobs);
 
