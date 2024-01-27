@@ -6,7 +6,7 @@ const createJob = async (req, res) => {
 
         if (!companyName || !logoUrl || !title || !description) {
             return res.status(400).json({
-                errorMessage: "Bad Request",
+                error: "Bad Request",
             });
         }
 
@@ -19,10 +19,10 @@ const createJob = async (req, res) => {
         });
 
         await jobDetails.save();
-
-        res.json({ message: "New job created successfully" });
+        return res.status(200).json({ message: "New job created successfully" });
+        
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ message: 'Error creating jobs' });
     }
 }
 
@@ -34,7 +34,7 @@ const editJob = async (req, res) => {
 
         if (!companyName || !logoUrl || !title || !description) {
             return res.status(400).json({
-                errorMessage: "Bad Request",
+                error: "Bad Request",
             });
         }
 
@@ -50,9 +50,9 @@ const editJob = async (req, res) => {
             }
         );
 
-        res.json({ message: "New job updated successfully" });
+        return res.status(200).json({ message: "job updated successfully" });
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ message: 'Error updating jobs' });
     }
 }
 
@@ -63,15 +63,15 @@ const jobDescription = async (req, res) => {
 
         if (!jobId) {
             return res.status(400).json({
-                errorMessage: "Bad Request",
+                error: "Bad Request",
             });
         }
 
         const jobDetails = await Job.findById(jobId);
-        res.json({ data: jobDetails });
+        return res.status(200).json({ data: jobDetails });
 
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ message: 'Error fetching jobs Description' });
     }
 }
 
@@ -90,7 +90,7 @@ const allJob = async (req, res) => {
                 ],
             };
         }
-        
+
         if (title) {
             query = {
                 $and: [
@@ -99,12 +99,11 @@ const allJob = async (req, res) => {
                 ],
             };
         }
-        
+
         const jobs = await Job.find(query);
-        res.json(jobs);
+        return res.status(200).json(jobs);
 
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: 'Error fetching jobs' });
     }
 }
@@ -115,14 +114,14 @@ const deleteJob = async (req, res) => {
 
         try {
             await Job.findByIdAndDelete(id);
-            res.json({ message: `User with id ${id} successfully deleted` });
+            res.status(200).json({ message: "successfully deleted" });
 
         } catch (error) {
-            res.status(500).json({ message: `Error deleting user: ${error.message}` });
+            res.status(500).json({ message: `Error deleting job: ${error.message}` });
         }
 
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ message: 'Error deleting jobs' });
     }
 }
 
