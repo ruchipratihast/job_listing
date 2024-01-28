@@ -74,7 +74,7 @@ const login = async (req, res) => {
         );
         if (!passwordMatch) {
             return res
-                .status(401)
+                .status(402)
                 .json({ error: "Invalid credentials" });
         }
 

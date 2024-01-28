@@ -24,10 +24,16 @@ export const loginUser = async ({ email, password }) =>{
         const reqUrl = `${backendUrl}/login`;
         const reqPayload = { email, password };
         const reponse = await axios.post(reqUrl,reqPayload);
-        console.log(Response);
         return reponse.data
     }
     catch(err){
-        console.log(err);
+        if (err.response.status === 401) {
+            return alert("User Not Found");
+         }
+
+        if (err.response.status === 402) {
+            return alert("Wrong Password");
+         }
+        return err;
     }
 }

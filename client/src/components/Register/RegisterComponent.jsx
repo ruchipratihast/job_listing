@@ -77,7 +77,7 @@ export default function RegisterComponent() {
         name='password'
         value={data.password}
         placeholder='Password'
-        type='text'
+        type='password'
         onChange={handleChange}
       />
 
