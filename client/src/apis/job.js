@@ -1,13 +1,15 @@
 import axios from "axios";
-const backendUrl = `http://localhost:3010/api/v1`;
+const backendUrl = `http://localhost:8000/api/v1/job`;
 
 export const getAllJobs = ({ skills, title }) => {
     try {
         const reqUrl = `${backendUrl}/all?skills=${skills}&title=${title}`;
         const response = axios.get(reqUrl);
-        console.log(response);
+        console.log("i am from try block")
+        console.log(response.data.data);
     } catch (error) {
-        console.log(error);
+        console.log('error coming from catch block')
+        console.log(error.message);
         // toast with custom message for clients
     }
 };
@@ -18,27 +20,34 @@ export const getJobDetails = async (jobId) => {
         const response = await axios.get(reqUrl);
         return response.data?.data;
     } catch (error) {
-        console.log(error);
+        return error ;
     }
 };
 
 export const createJobPost = async ({
     companyName,
-    logoUrl,
-    title,
-    description,
+    title, 
+    location,
+    skills, 
+    salary, 
+    description
 }) => {
     try {
         const reqUrl = `${backendUrl}/create`;
         const reqPayload = {
             companyName,
-            logoUrl,
-            title,
-            description,
+            title, 
+            location, 
+            skills, 
+            salary, 
+            description
         };
         const token = localStorage.getItem("token");
         axios.defaults.headers.common["Authorization"] = token;
+        console.log(token)
         const response = await axios.post(reqUrl, reqPayload);
+        console.log("this is from auth response")
+        console.log(response)
         return response;
     } catch (error) {
         console.log(error);

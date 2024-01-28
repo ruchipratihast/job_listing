@@ -1,0 +1,26 @@
+meta {
+  name: createJob
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/v1/job/create
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWI2MzY2ZTI5N2FjMDcyZTZkY2IxZjkiLCJpYXQiOjE3MDY0NjQ0MjV9.RhFSoYsaDrbwocz1XLUV7ne5lxZ09zwYaDMw6eotsXg
+}
+
+body:json {
+  {
+    "companyName" : "WordPress Development work from home job/internship at Adyaka Infosec Private Limited",
+    "title" : "WordPress Development ", 
+    "location" : "Bangalore | India",
+    "skills": ["javaScript", "html", "wordpress"] ,
+    "salary" : "20000", 
+    "description" : "Stipend structure: This is a performance-based internship. In addition to the minimum-assured stipend, you will also be paid a performance-linked incentive (₹ 2500 per design)."
+  }
+}

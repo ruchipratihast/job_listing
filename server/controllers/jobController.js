@@ -2,18 +2,20 @@ const Job = require("../models/jobModel");
 
 const createJob = async (req, res) => {
     try {
-        const { companyName, logoUrl, title, description } = req.body;
+        const { companyName,title, location, skills, salary, description } = req.body;
 
-        if (!companyName || !logoUrl || !title || !description) {
-            return res.status(400).json({
-                error: "Bad Request",
-            });
-        }
+        // if (!companyName || !location || !title || !description || !skills ||!salary) {
+        //     return res.status(400).json({
+        //         error: "Bad Request",
+        //     });
+        // }
 
         jobDetails = new Job({
             companyName,
-            logoUrl,
-            title,
+            title, 
+            location,
+            skills, 
+            salary, 
             description,
             refUserId: req.body.userId,
         });
