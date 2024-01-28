@@ -4,10 +4,14 @@ const dotenv = require('dotenv');
 const port = process.env.PORT || 8000;
 const authRoute = require('./routes/authRoute');
 const jobRoute = require('./routes/jobRoute');
+var cors = require('cors');
+
 dotenv.config();
 
 app.use(express.json());
 const db = require('./config/db');
+
+app.use(cors());
 
 //health api
 app.get("/health", (req, res) => {
