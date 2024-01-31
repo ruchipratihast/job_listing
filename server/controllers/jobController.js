@@ -4,11 +4,11 @@ const createJob = async (req, res) => {
     try {
         const { companyName,title, location, skills, salary, description } = req.body;
 
-        // if (!companyName || !location || !title || !description || !skills ||!salary) {
-        //     return res.status(400).json({
-        //         error: "Bad Request",
-        //     });
-        // }
+        if (!companyName || !title || !location || !skills || !salary ||!description) {
+            return res.status(400).json({
+                error: "Bad Request",
+            });
+        }
 
         jobDetails = new Job({
             companyName,
@@ -30,24 +30,20 @@ const createJob = async (req, res) => {
 
 const editJob = async (req, res) => {
     try {
-        const { companyName, logoUrl, title, description } = req.body;
+        const { companyName,title, location, skills, salary, description } = req.body;
 
         const jobId = req.params.jobId;
-
-        if (!companyName || !logoUrl || !title || !description) {
-            return res.status(400).json({
-                error: "Bad Request",
-            });
-        }
 
         await Job.updateOne(
             { _id: jobId },
             {
                 $set: {
                     companyName,
-                    logoUrl,
-                    title,
-                    description,
+                    title, 
+                    location,
+                    skills, 
+                    salary, 
+                    description
                 },
             }
         );
