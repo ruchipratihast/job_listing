@@ -3,13 +3,10 @@ import { useState, useEffect } from "react";
 import { getJobDetails } from "../../apis/job";
 import styles from "./JobDetails.module.css";
 
-const JobDetailsComponent = ({}) => {
+const JobDetailsComponent = ({ }) => {
     const navigate = useNavigate();
-    const [data, setData] = useState(true);
+    const [data, setData] = useState(null);
 
-    useEffect(() => {
-        fetchJobDetailsById();
-    }, []);
 
     const fetchJobDetailsById = async () => {
         const jobId = window.location.pathname?.split("/").slice(-1)[0];
@@ -18,10 +15,35 @@ const JobDetailsComponent = ({}) => {
         setData(response);
     };
 
+    useEffect(() => {
+        fetchJobDetailsById();
+    }, []);
+
     return (
         <>
-            {data ? (
+            {data !== null ? (
                 <>
+                    <div className={styles.header}>
+                        <h1>Jobfinder</h1>
+                        <div>
+                        <button
+                            onClick={() => {
+                                navigate("/Login")
+                            }}
+                            className={styles.loginButton}
+                        >
+                            Login
+                        </button>
+                        <button
+                            onClick={() => {
+                                navigate("/register")
+                            }}
+                            className={styles.registerButton}
+                        >
+                            Register
+                        </button>
+                        </div>
+                    </div>
                     <div className={styles.container}>
                         <p className={styles.containerText}>
                             {data?.companyName}
@@ -33,7 +55,7 @@ const JobDetailsComponent = ({}) => {
                         </div>
                         <div className={styles.heading}>
                             <div>
-                                <p className={styles.boldText}>{data?.description}</p>
+                                <p className={styles.boldText}>{data?.title}</p>
                                 <p className={styles.locationText}>
                                     {data?.location}
                                 </p>
@@ -71,7 +93,7 @@ const JobDetailsComponent = ({}) => {
                             <h2>About Company</h2>
                             <p>We provide technology-based services to help businesses and organizations achieve their goals. We offer a wide range of services, including software development, system integration, network and security services, cloud computing, and data analytics. Our primary focus is on leveraging technology to streamline business processes, improve productivity, and enhance overall efficiency.</p>
                         </div>
-                        {/* <div className={styles.info}>
+                        <div className={styles.info}>
                             <h2>Skill(s) Required</h2>
                             {data.skills.map((skill) => {
                                 return (
@@ -80,10 +102,15 @@ const JobDetailsComponent = ({}) => {
                                     </span>
                                 );
                             })}
-                        </div> */}
+                        </div>
                         <div className={styles.info}>
                             <h2>About the job/internship</h2>
                             <p>We are looking for a responsible PHP/WordPress/Laravel/Shopify Developer. He/She will be liable for managing services and therefore the interchange of knowledge between the server and the users. The candidate's primary focus is going to be the event of all server-side logic, definition, and maintenance of the central database and ensuring high performance and responsiveness to requests from the front end.</p>
+                        </div>
+
+                        <div className={styles.info}>
+                            <h2>Additional Information</h2>
+                            <p>{data.description}</p>
                         </div>
                     </div>
                 </>

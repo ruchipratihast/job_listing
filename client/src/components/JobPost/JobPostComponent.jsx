@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./JobPostComponent.module.css";
 import { createJobPost, updateJobPost } from "../../apis/job";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function JobPostComponent() {
+    const navigate = useNavigate();
     const { state } = useLocation();
 
     const [isEditExistingJobPost] = useState(false || state?.edit);
@@ -11,7 +14,7 @@ export default function JobPostComponent() {
         companyName: "" || state?.data?.companyName,
         title: "" || state?.data?.title,
         location: "" || state?.data?.location,
-        skills: "" ,
+        skills: "" || state?.data?.skills,
         salary: "" || state?.data?.salary,
         description: "" || state?.data?.description
     });
@@ -23,24 +26,25 @@ export default function JobPostComponent() {
     const handleSubmit = async (event) => {
         if (isEditExistingJobPost) {
             if (!state.id) return;
+            console.log(formData.skills)
             await updateJobPost(state.id, {
                 ...formData,
-                skills: formData.skills.split(","),
+                skills: formData.skills,
             });
+            navigate("/");
+            toast.success("Job Updated Successfully !")
         } else {
-            console.log(formData)
             await createJobPost({
                 ...formData,
-                skills: formData.skills.split(","),
+                 skills: formData.skills.split(" "),
             });
+            navigate("/");
+            toast.success("New Job Post is Added Successfully !")
         }
     };
 
-    useEffect(() => {
-        // console.log(formData);
-    }, [formData]);
-
     return (
+        <form>
         <div className={styles.container}>
             <h1 className={styles.h1}>
                 {isEditExistingJobPost ? <>Edit</> : <>Add</>} job description
@@ -54,6 +58,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="companyName"
+                        required = {true}
                         value={formData?.companyName}
                         onChange={handleChange}
                         placeholder="Enter company name"
@@ -68,6 +73,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="title"
+                        required = {true}
                         value={formData?.title}
                         onChange={handleChange}
                         placeholder="Enter Title"
@@ -82,6 +88,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="skills"
+                        required = {true}
                         value={formData?.skills}
                         onChange={handleChange}
                         placeholder="Enter logo Skills"
@@ -96,6 +103,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="location"
+                        required = {true}
                         value={formData?.location}
                         onChange={handleChange}
                         placeholder="Enter job Location"
@@ -110,6 +118,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="salary"
+                        required = {true}
                         value={formData?.salary}
                         onChange={handleChange}
                         placeholder="Enter Salary"
@@ -124,6 +133,7 @@ export default function JobPostComponent() {
                         className={styles.input}
                         type="text"
                         name="description"
+                        required = {true}
                         value={formData?.description}
                         onChange={handleChange}
                         placeholder="Enter job Description"
@@ -131,21 +141,22 @@ export default function JobPostComponent() {
                 </div>
             </div>
             <button
-                // onClick={() => navigate("/listing")}
+                onClick={() => navigate("/")}
                 className={styles.cancel}
             >
                 Cancel
             </button>
             {isEditExistingJobPost ? (
-                <button onClick={handleSubmit} className={styles.add}>
+                <button onClick={()=>handleSubmit()} className={styles.add}>
                     Edit Job
                 </button>
             ) : (
-                <button onClick={handleSubmit} className={styles.add}>
+                <button onClick={()=>handleSubmit()} className={styles.add}>
                     + Add Job
                 </button>
             )}
         </div>
+        </form>
     );
 }
 
