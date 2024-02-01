@@ -97,7 +97,7 @@ const allJob = async (req, res) => {
                 ],
             };
         }
-
+        console.log(query)
         const jobs = await Job.find(query);
         return res.status(200).json(jobs);
 

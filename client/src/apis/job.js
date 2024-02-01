@@ -1,16 +1,15 @@
 import axios from "axios";
 const backendUrl = `http://localhost:8000/api/v1/job`;
 
-export const getAllJobs = ({ skills, title }) => {
+export const getAllJobs = async ({ skills, title }) => {
     try {
         const reqUrl = `${backendUrl}/all?skills=${skills}&title=${title}`;
-        const response = axios.get(reqUrl);
-        console.log("i am from try block")
-        console.log(response.data.data);
+        const response = await axios.get(reqUrl);
+        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.log('error coming from catch block')
-        console.log(error.message);
-        // toast with custom message for clients
+        console.log(error);
     }
 };
 
