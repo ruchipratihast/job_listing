@@ -4,6 +4,8 @@ import { getJobDetails } from "../../apis/job";
 import styles from "./JobDetails.module.css";
 
 const JobDetailsComponent = ({ }) => {
+    const [isLogged, setIsLogged] = useState("");
+
     const navigate = useNavigate();
     const [data, setData] = useState(null);
 
@@ -17,6 +19,11 @@ const JobDetailsComponent = ({ }) => {
     useEffect(() => {
         fetchJobDetailsById();
     }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        setIsLogged(token);
+    }, [])
 
     return (
         <>
@@ -60,7 +67,7 @@ const JobDetailsComponent = ({ }) => {
                                 </p>
                             </div>
                             <div>
-                                <button
+                                {isLogged ? <button
                                     onClick={() => {
                                         navigate("/job-post", {
                                             state: {
@@ -73,7 +80,7 @@ const JobDetailsComponent = ({ }) => {
                                     className={styles.edit}
                                 >
                                     Edit Job
-                                </button>
+                                </button> : <></>}
                             </div>
                         </div>
                         <div className={styles.perks}>

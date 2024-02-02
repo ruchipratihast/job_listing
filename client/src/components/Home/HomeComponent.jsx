@@ -12,6 +12,7 @@ export default function HomeComponent() {
     const [jobs, setJobs] = useState([]);
     const [skills, setSkills] = useState([]);
     const [search, setSearch] = useState("");
+    const [isLogged, setIsLogged] = useState("");
 
     const handleSkill = (event) => {
         if (!event.target.value) return;
@@ -20,7 +21,7 @@ export default function HomeComponent() {
         if (!newArr.length) {
             setSkills([...skills, event.target.value]);
             fetchAllJobs([...skills, event.target.value], "");
-        }else{
+        } else {
 
             fetchAllJobs([], "");
         }
@@ -32,8 +33,8 @@ export default function HomeComponent() {
         fetchAllJobs([...newArr], "");
     };
 
-    
-    const fetchAllJobs = async (skills, title ) => {
+
+    const fetchAllJobs = async (skills, title) => {
         console.log("Fetch all Jobs");
         console.log(skills);
         const reqPayload = {
@@ -43,22 +44,32 @@ export default function HomeComponent() {
         const jobList = await getAllJobs(reqPayload);
         setJobs(() => jobList);
     };
-    
+
     useEffect(() => {
         fetchAllJobs([], "");
     }, []);
 
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        setIsLogged(token);
+    }, [])
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate("/register")
+    }
+
     const handleKeyDown = (event) => {
         if (!search?.trim()) {
-            fetchAllJobs([],"");
+            fetchAllJobs([], "");
             return;
         }
         if (event.keyCode === 13) {
             fetchAllJobs([], search);
         }
 
-        if(search === ""){
+        if (search === "") {
             fetchAllJobs([], search);
         }
     };
@@ -67,24 +78,30 @@ export default function HomeComponent() {
         <>
             <div className={styles.header}>
                 <h1>Jobfinder</h1>
-                <div>
-                    <button
-                        onClick={() => {
-                            navigate("/Login")
-                        }}
-                        className={styles.loginButton}
-                    >
-                        Login
-                    </button>
-                    <button
-                        onClick={() => {
-                            navigate("/register")
-                        }}
-                        className={styles.registerButton}
-                    >
-                        Register
-                    </button>
-                </div>
+                {isLogged ? <button
+                    onClick={handleLogout}
+                    className={styles.loginButton}
+                >
+                    Logout
+                </button>
+                    : <div>
+                        <button
+                            onClick={() => {
+                                navigate("/Login")
+                            }}
+                            className={styles.loginButton}
+                        >
+                            Login
+                        </button>
+                        <button
+                            onClick={() => {
+                                navigate("/register")
+                            }}
+                            className={styles.registerButton}
+                        >
+                            Register
+                        </button>
+                    </div>}
             </div>
             <div className={styles.container}>
                 <div className={styles.containerTop}>
@@ -96,7 +113,7 @@ export default function HomeComponent() {
                         type="text"
                         name="search"
                         placeholder="Type any job title"
-                    />  
+                    />
                 </div>
                 <div className={styles.containerBottom}>
                     <select
@@ -124,21 +141,20 @@ export default function HomeComponent() {
                             </span>
                         );
                     })}
-                    <button
+                    {isLogged ? <button
                         onClick={() => navigate("/job-post")}
                         className={styles.edit}
                     >
                         Add Job
-                    </button>
+                    </button> : <></>}
                 </div>
             </div>
-            {/* <div className={styles.bottom}> */}
             {jobs.map((data) => {
                 return (
                     <div key={data._id} className={styles.list}>
                         <div className={styles.listLeft}>
                             <div>
-                                <img src={data.logoUrl}  height={'100px'} width={'100px'} alt="logo Image"/>
+                                <img src={data.logoUrl} height={'100px'} width={'100px'} alt="logo Image" />
                             </div>
                             <div className={styles.infoLeft}>
                                 <p className={styles.position}>
@@ -146,13 +162,13 @@ export default function HomeComponent() {
                                 </p>
                                 <p className={styles.extraInfo}>
                                     <span className={styles.greyText}>
-                                       <IoMdPeople/> 11-50
+                                        <IoMdPeople /> 11-50
                                     </span>
                                     <span className={styles.greyText}>
-                                    ₹  {data.salary}
+                                        ₹  {data.salary}
                                     </span>
                                     <span className={styles.greyText}>
-                                       <MdLocationOn/> {data.location}
+                                        <MdLocationOn /> {data.location}
                                     </span>
                                 </p>
                                 <p className={styles.extraInfo}>
@@ -179,7 +195,7 @@ export default function HomeComponent() {
                                 })}
                             </div>
                             <div className={styles.btnGroup}>
-                                <button
+                                {isLogged ? <button
                                     onClick={() =>
                                         navigate("/job-post", {
                                             state: {
@@ -192,7 +208,7 @@ export default function HomeComponent() {
                                     className={styles.edit}
                                 >
                                     Edit job
-                                </button>
+                                </button> : <></>}
                                 <button
                                     onClick={() =>
                                         navigate(`/job-details/${data._id}`)
@@ -204,8 +220,8 @@ export default function HomeComponent() {
                             </div>
                         </div>
                     </div>
-                 );
-            })} 
+                );
+            })}
         </>
     );
 }

@@ -19,7 +19,7 @@ function App() {
           <Route path='/job-details/:id' element={<JobDetailsPage />} />
           <Route
             path='/job-post'
-            element={<ProtectedRote component={JobPostPage} />}
+            element={<ProtectedRote Component={JobPostPage} />}
           />
           <Route path='/login' element={<LoginPage />} />
         </Routes>

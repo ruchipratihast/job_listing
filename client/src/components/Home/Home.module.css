@@ -41,7 +41,7 @@
 }
 
 .container {
-    width: 80vw;
+    width: 65vw;
     margin: 7vh auto 12px auto;
     background-color: white;
     box-shadow: 0px 4px 23px 2px rgba(0, 0, 0, 0.1);
@@ -86,11 +86,11 @@
 }
 
 .list {
-    width: 80vw;
+    width: 65vw;
     margin: 7vh auto 12px auto;
     background-color: white;
     box-shadow: 0px 4px 23px 2px rgba(0, 0, 0, 0.1);
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -138,7 +138,7 @@
 
 .btnGroup {
     display: flex;
-    margin-top: 1rem;
+    margin-top: 1.6rem;
     justify-content: space-evenly;
 }
 
@@ -152,15 +152,6 @@
     cursor: pointer;
     margin-left: 1rem;
 }
-
-/* .bottom{
-    position: fixed;
-    top: 40vh;
-    left: 10vw;
-    height: fit-content;
-    overflow: scroll;
-} */
-
 
 .chip {
     box-sizing: border-box;

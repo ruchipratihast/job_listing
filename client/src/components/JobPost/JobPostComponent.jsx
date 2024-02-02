@@ -38,15 +38,15 @@ export default function JobPostComponent() {
                 ...formData,
                 skills: formData.skills,
             });
-            navigate("/");
             toast.success("Job Updated Successfully !")
+            navigate("/");
         } else {
             await createJobPost({
                 ...formData,
                 skills: formData.skills.split(" "),
             });
-            navigate("/");
             toast.success("New Job Post is Added Successfully !")
+            navigate("/");
         }
     };
 
@@ -158,7 +158,7 @@ export default function JobPostComponent() {
                             </label>
                             <select
                                 onChange={handleChange}
-                                className={styles.jobType}
+                                className={styles.inputSelect}
                                 name="jobType"
                                 required={true}
                             >
