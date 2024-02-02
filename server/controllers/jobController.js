@@ -2,9 +2,9 @@ const Job = require("../models/jobModel");
 
 const createJob = async (req, res) => {
     try {
-        const { companyName,title, location, skills, salary, description } = req.body;
+        const { companyName,title, location, skills, salary, description,logoUrl, locationPreference, jobType } = req.body;
 
-        if (!companyName || !title || !location || !skills || !salary ||!description) {
+        if (!companyName || !title || !location || !skills || !salary ||!description || !logoUrl) {
             return res.status(400).json({
                 error: "Bad Request",
             });
@@ -17,6 +17,9 @@ const createJob = async (req, res) => {
             skills, 
             salary, 
             description,
+            logoUrl, 
+            locationPreference, 
+            jobType,
             refUserId: req.body.userId,
         });
 
@@ -30,7 +33,7 @@ const createJob = async (req, res) => {
 
 const editJob = async (req, res) => {
     try {
-        const { companyName,title, location, skills, salary, description } = req.body;
+        const { companyName,title, location, skills, salary, description,logoUrl, locationPreference, jobType } = req.body;
 
         const jobId = req.params.jobId;
 
@@ -43,7 +46,10 @@ const editJob = async (req, res) => {
                     location,
                     skills, 
                     salary, 
-                    description
+                    description,
+                    logoUrl, 
+                    locationPreference, 
+                    jobType
                 },
             }
         );
@@ -76,33 +82,31 @@ const jobDescription = async (req, res) => {
 //Controller to get all the jobs with filters based on skills and job title
 const allJob = async (req, res) => {
     try {
-        const { skills, title } = req.query;
+        const title = req.query.title || "";
+        const skills = req.query.skills || "";
 
-        let query = {};
+        let filter = {};
 
-        if (skills) {
-            query = {
-                $and: [
-                    query,
-                    { skills: { $in: skills.split(',') } },
-                ],
-            };
+        //Reguler expression
+        if(skills){
+            let filterSkills = skills?.split(",");
+            let filterSkillsRegex = [];
+            for(var f of filterSkills){
+                filterSkillsRegex.push(new RegExp('^' + f + '$', 'i'));
+            }
+            filter = { skills: { $in: [...filterSkillsRegex]} };
         }
 
-        if (title) {
-            query = {
-                $and: [
-                    query,
-                    { title: { $regex: title, $options: "i" } },
-                ],
-            };
-        }
-        console.log(query)
-        const jobs = await Job.find(query);
-        return res.status(200).json(jobs);
+        const jobList = await Job.find(
+            {
+                title: { $regex: title, $options: "i" },
+                ...filter,
+            }
+        );
 
+        res.json(jobList );
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching jobs' });
+        console.log(error);
     }
 }
 

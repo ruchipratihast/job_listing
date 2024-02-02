@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const jobSchema = new mongoose.Schema({
     companyName: {
         type: String,
-        required: true,      
+        required: true,
+    },
+    logoUrl:{
+        type: String,
     },
     title: {
         type: String,
@@ -12,6 +15,14 @@ const jobSchema = new mongoose.Schema({
     location: {
         type: String,
         required: true,
+    },
+    locationPreference: {
+        type: String,
+        default: "office",
+    },
+    jobType: {
+        type: String,
+        default: "full-time",
     },
     skills: {
         type: [String],
