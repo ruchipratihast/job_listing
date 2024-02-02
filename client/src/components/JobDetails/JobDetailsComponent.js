@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getJobDetails } from "../../apis/job";
 import styles from "./JobDetails.module.css";
@@ -6,7 +6,6 @@ import styles from "./JobDetails.module.css";
 const JobDetailsComponent = ({ }) => {
     const navigate = useNavigate();
     const [data, setData] = useState(null);
-
 
     const fetchJobDetailsById = async () => {
         const jobId = window.location.pathname?.split("/").slice(-1)[0];

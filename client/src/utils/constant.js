@@ -11,5 +11,7 @@ export const DEFAULT_SKILLS = [
     "HTML",
     "CSS",
     "node",
-    "react",
+    "React",
+    "Dart",
+    "Flutter"
 ];

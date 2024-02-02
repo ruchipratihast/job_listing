@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DEFAULT_SKILLS } from "../../utils/constant";
 import { getAllJobs } from "../../apis/job";
-import { CiSearch } from "react-icons/ci";
+import { IoMdPeople } from "react-icons/io";
+import { MdLocationOn } from "react-icons/md";
 
 export default function HomeComponent() {
     const navigate = useNavigate();
@@ -18,33 +19,47 @@ export default function HomeComponent() {
         const newArr = skills.filter((skill) => skill === event.target.value);
         if (!newArr.length) {
             setSkills([...skills, event.target.value]);
+            fetchAllJobs([...skills, event.target.value], "");
+        }else{
+
+            fetchAllJobs([], "");
         }
     };
 
     const removeSkill = (selectedSkill) => {
         const newArr = skills.filter((skill) => skill !== selectedSkill);
         setSkills([...newArr]);
+        fetchAllJobs([...newArr], "");
     };
 
-    useEffect(() => {
-        fetchAllJobs();
-    }, [skills]);
-
-    const fetchAllJobs = async () => {
+    
+    const fetchAllJobs = async (skills, title ) => {
+        console.log("Fetch all Jobs");
+        console.log(skills);
         const reqPayload = {
             skills: skills.join(","),
-            title: search?.trim(),
+            title: title?.trim(),
         };
         const jobList = await getAllJobs(reqPayload);
-        console.log(jobList);
+        setJobs(() => jobList);
     };
+    
+    useEffect(() => {
+        fetchAllJobs([], "");
+    }, []);
+
 
     const handleKeyDown = (event) => {
         if (!search?.trim()) {
+            fetchAllJobs([],"");
             return;
         }
         if (event.keyCode === 13) {
-            fetchAllJobs();
+            fetchAllJobs([], search);
+        }
+
+        if(search === ""){
+            fetchAllJobs([], search);
         }
     };
 
@@ -123,26 +138,26 @@ export default function HomeComponent() {
                     <div key={data._id} className={styles.list}>
                         <div className={styles.listLeft}>
                             <div>
-                                <img src={data.logoURL} />
+                                <img src={data.logoUrl}  height={'100px'} width={'100px'} alt="logo Image"/>
                             </div>
                             <div className={styles.infoLeft}>
                                 <p className={styles.position}>
-                                    {data.position}
+                                    {data.title}
                                 </p>
                                 <p className={styles.extraInfo}>
                                     <span className={styles.greyText}>
-                                        11-50
+                                       <IoMdPeople/> 11-50
                                     </span>
                                     <span className={styles.greyText}>
-                                        {data.salary}
+                                    ₹  {data.salary}
                                     </span>
                                     <span className={styles.greyText}>
-                                        {data.location}
+                                       <MdLocationOn/> {data.location}
                                     </span>
                                 </p>
                                 <p className={styles.extraInfo}>
                                     <span className={styles.redText}>
-                                        {data.remote}
+                                        {data.locationPreference}
                                     </span>
                                     <span className={styles.redText}>
                                         {data.jobType}
@@ -152,7 +167,7 @@ export default function HomeComponent() {
                         </div>
                         <div>
                             <div>
-                                {data.skillsRequired.map((skill) => {
+                                {data.skills.map((skill) => {
                                     return (
                                         <span
                                             className={styles.skill}
@@ -166,8 +181,12 @@ export default function HomeComponent() {
                             <div className={styles.btnGroup}>
                                 <button
                                     onClick={() =>
-                                        navigate("/addJob", {
-                                            state: { id: data._id, edit: true },
+                                        navigate("/job-post", {
+                                            state: {
+                                                id: data._id,
+                                                data: data,
+                                                edit: true,
+                                            },
                                         })
                                     }
                                     className={styles.edit}
@@ -176,9 +195,7 @@ export default function HomeComponent() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        navigate("/detail", {
-                                            state: { id: data._id },
-                                        })
+                                        navigate(`/job-details/${data._id}`)
                                     }
                                     className={styles.view}
                                 >
@@ -187,8 +204,8 @@ export default function HomeComponent() {
                             </div>
                         </div>
                     </div>
-                );
-            })}
+                 );
+            })} 
         </>
     );
 }

@@ -1,7 +1,7 @@
 .container {
     box-sizing: border-box;
     width: 50vw;
-    padding: 10vh 7vw;
+    padding: 2vh 7vw;
     position: relative;
 }
 
@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 1rem 0;
 }
 
@@ -20,10 +20,18 @@
 
 .input {
     width: 60%;
-    padding: 12px;
+    padding: 8px;
     border: 2px solid #C2C2C2;
     border-radius: 5px;
     margin-bottom: 14px;
+}
+
+.inputSelect{
+    width: 7rem;
+    border: 1.6px solid rgb(206, 198, 198);
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
 }
 
 .cancel {

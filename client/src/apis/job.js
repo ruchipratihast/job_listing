@@ -5,7 +5,6 @@ export const getAllJobs = async ({ skills, title }) => {
     try {
         const reqUrl = `${backendUrl}/all?skills=${skills}&title=${title}`;
         const response = await axios.get(reqUrl);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log('error coming from catch block')
@@ -29,7 +28,10 @@ export const createJobPost = async ({
     location,
     skills, 
     salary, 
-    description
+    description,
+    logoUrl, 
+    locationPreference, 
+    jobType
 }) => {
     try {
         const reqUrl = `${backendUrl}/create`;
@@ -39,7 +41,10 @@ export const createJobPost = async ({
             location, 
             skills, 
             salary, 
-            description
+            description,
+            logoUrl, 
+            locationPreference, 
+            jobType
         };
         const token = localStorage.getItem("token");
         axios.defaults.headers.common["Authorization"] = token;
@@ -59,8 +64,13 @@ export const updateJobPost = async (
         location,
         skills, 
         salary, 
-        description }
+        description,
+        logoUrl, 
+        locationPreference, 
+        jobType
+    }
 ) => {
+    console.log(jobType)
     try {
         const reqUrl = `${backendUrl}/edit/${jobId}`;
         const reqPayload = {
@@ -69,7 +79,10 @@ export const updateJobPost = async (
             location,
             skills, 
             salary, 
-            description
+            description,
+            logoUrl, 
+            locationPreference, 
+            jobType
         };
         const token = localStorage.getItem("token");
         axios.defaults.headers.common["Authorization"] = token;
